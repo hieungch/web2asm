@@ -1,56 +1,95 @@
+
 <?php 
-//ket noi co so du lieu
-$hostname = 'localhost';
-$username='root';
-$password='';
-$dbname='storeman';
-$port=3306;
-function query($sql)
-{
-	global $hostname;
-	global $username;
-	global $password;
-	global $dbname;
-	global $port;
-	$conn = new mysqli($hostname, $username, $password, $dbname, $port);
-	if($conn->connect_error)
-	{
-		//neu nhu ket noi khong thanh cong thi dung chuong trinh
-		echo "Connection fail<br>";
-		//dung chuong trinh
-		die($conn->connect_error);
-	}
 	
-	//chay cau truy van lay ket qua
-	$result = $conn->query($sql);
-	if(!$result)
+	function query($sql)
 	{
-		//Neu khong co ket qua ($result=null) thi dung chuong trinh
-		echo "SQL execution fail <br>";
-		die($conn->error);
-	}
-	//lay tat ca cac ban ghi tu ket qua
-	$rows = mysqli_fetch_all($result);
-	return $rows;
-}
-function execsql($sql)
-{
-	global $hostname;
-	global $username;
-	global $password;
-	global $dbname;
-	global $port;
-	$conn = new mysqli($hostname, $username, $password, $dbname, $port);
-	if($conn->connect_error)
-	{
-		//neu nhu ket noi khong thanh cong thi dung chuong trinh
-		echo "Connection fail<br>";
-		//dung chuong trinh
-		die($conn->connect_error);
-	}
+		$db = parse_url(getenv("DATABASE_URL"));
 	
-	//chay cau truy van lay ket qua
-	$result = $conn->query($sql);
-	return $result;
-}
+			$pdo = new PDO("pgsql:" . sprintf(
+			    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+			    $db["host"],
+			    $db["port"],
+			    $db["user"],
+			    $db["pass"],
+			    ltrim($db["path"], "/")
+											)
+						);
+			$stmt1= $pdo->prepare($sql);
+            $stmt1->execute();
+            $result =$stmt1->fetchAll();
+            return $result;
+	}
+	function execsql($sql)
+	{
+		$db = parse_url(getenv("DATABASE_URL"));
+	
+			$pdo = new PDO("pgsql:" . sprintf(
+			    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+			    $db["host"],
+			    $db["port"],
+			    $db["user"],
+			    $db["pass"],
+			    ltrim($db["path"], "/")
+											)
+						);
+			$stmt1= $pdo->prepare($sql);
+            $stmt1->execute();
+            $result =$stmt1->fetchAll();
+            return $result;
+	}
+
+
+	function insert($sql)
+	{
+		$db = parse_url(getenv("DATABASE_URL"));
+	
+	$pdo = new PDO("pgsql:" . sprintf(
+	    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+	    $db["host"],
+	    $db["port"],
+	    $db["user"],
+	    $db["pass"],
+	    ltrim($db["path"], "/")
+									)
+				);
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute();
+	}
+	function update($sql)
+	{
+		$db = parse_url(getenv("DATABASE_URL"));
+	
+	$pdo = new PDO("pgsql:" . sprintf(
+	    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+	    $db["host"],
+	    $db["port"],
+	    $db["user"],
+	    $db["pass"],
+	    ltrim($db["path"], "/")
+									)
+				);
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute();
+		
+	}
+	function delete($sql)
+	{
+		$db = parse_url(getenv("DATABASE_URL"));
+	
+	$pdo = new PDO("pgsql:" . sprintf(
+	    "host=%s;port=%s;user=%s;password=%s;dbname=%s",
+	    $db["host"],
+	    $db["port"],
+	    $db["user"],
+	    $db["pass"],
+	    ltrim($db["path"], "/")
+									)
+				);
+		$stmt= $pdo->prepare($sql);
+		$stmt->execute();
+		
+	}
+		
+
+	
 ?>
