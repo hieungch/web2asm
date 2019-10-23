@@ -1,7 +1,7 @@
 <div class="catedit" >
 
 	<ul>
-		<li><a href="ASM2_homepage.php">HOME</a></li>
+		<li><a href="index.php">HOME</a></li>
 		<?php 
 		$sql = "Select * from category";
 		$cats = query($sql);
