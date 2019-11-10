@@ -10,7 +10,7 @@
 			<div class="products">
 				<div class="name"><?=$pros[$i][1]?></div>
 				<div class="image">
-					<a href="ASM2_producdetail.php?pid=<?=$pros[$i][0]?>">
+					<a href="./ASM2_producdetail.php?pid=<?=$pros[$i][0]?>">
 						<img src="<?=$pros[$i][2]?>" alt="" width="100%" height="100%">
 					</a>
 				</div>
